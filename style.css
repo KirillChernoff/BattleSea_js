@@ -1,5 +1,5 @@
 #playerField .ship {
-	background: #778899; 
+	background: black; 
 }
 
 #aiField .ship, .sea {
@@ -24,5 +24,5 @@
 }
 
 .o{
-	background: gray;
+	background: #778899;
 }
