@@ -1,45 +1,28 @@
-body {
-	margin: 20px;
-	padding: 0;
-	background: #F0FFFF;
+#playerField .ship {
+	background: #778899; 
 }
 
-.game_area{
-	width: 980px;
-	margin: 0 auto;
+#aiField .ship, .sea {
+	background: #00BFFF; 
 }
 
-.welcome_area{
-	font-family: "Comic Sans MS", Arial, Helvetica, sans-serif;
-	font-size: 20pt;
-	color: #704B3A;
+#playerField div, #aiField div {
+	width: 20px;
+	height: 20px;
+	float: left;
 }
 
-.battle_area{
-	margin-top: 50px;
-	font-family: "Comic Sans MS", Arial, Helvetica, sans-serif;
-	font-size: 15pt;
-	color: #704B3A;
+#playerField, #aiField {
+	width: 200px; 
+	height: 200 px; 
+	float: left;
+	margin: 10px; 
 }
 
-.userCell{
-	width: 40px;
-	height: 40px;
-	cursor: pointer;
-	background-color: #97FFFF;
-	border-left: 1px dashed #000000;
-	border-right: 1px dashed #000000;
-	border-bottom: 1px dashed #000000;
-	border-top: 1px dashed #000000;
+.hit{
+	background: red;
 }
 
-.shipCell{
-	width: 40px;
-	height: 40px;
-	cursor: pointer;
-	background-color: #FFD700;
-	border-left: 1px dashed #000000;
-	border-right: 1px dashed #000000;
-	border-bottom: 1px dashed #000000;
-	border-top: 1px dashed #000000;
+.o{
+	background: gray;
 }
