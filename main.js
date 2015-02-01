@@ -4,24 +4,26 @@ var aiMap;
 var pole_x = 10, pole_y = 10;
 
 function init(){
-	var mas = [];
+    playerMap = [];
+    aiMap = [];
 	
 	for (var i = 0; i < pole_x; i++){
 		
-		mas[i] = [];
+	    playerMap[i] = [];
+	    aiMap[i] = [];
 		
 		for (var j = 0; j < pole_y; j++){
 		
-			mas[i][j] = '~';
+		    playerMap[i][j] = '~';
+		    aiMap[i][j] = '~';
 		}
 	}
-	
-	playerMap = aiMap = mas;
 }
 
 function createField(){
 
     setShips(playerMap);
+    setShips(aiMap);
     
 	var playerField = document.querySelector('#playerField');
 	var aiField = document.querySelector('#aiField');
@@ -33,7 +35,7 @@ function createField(){
 			playerField.appendChild(divPl);
 			
 			divAi = document.createElement('div');
-			divAi.className = aiMap[i][j] == 'ship' ? 'ship' : 'sea';
+            divAi.id = i + '_' + j, divAi.className = aiMap[i][j] == 'ship' ? 'ship' : 'sea';
 			// divAi.onclick =
 			aiField.appendChild(divAi);
 		}
