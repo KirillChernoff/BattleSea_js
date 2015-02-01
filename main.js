@@ -3,7 +3,7 @@ var aiMap;
 
 var pole_x = 10, pole_y = 10;
 
-function Init(){
+function init(){
 	var mas = [];
 	
 	for (var i = 0; i < pole_x; i++){
@@ -19,13 +19,10 @@ function Init(){
 	playerMap = aiMap = mas;
 }
 
-function CreateField(){
+function createField(){
 
-	SetShip(playerMap);
-	SetShip(playerMap);
-	SetShip(playerMap);
-	SetShip(playerMap);
-
+    setShips(playerMap);
+    
 	var playerField = document.querySelector('#playerField');
 	var aiField = document.querySelector('#aiField');
 
@@ -43,57 +40,107 @@ function CreateField(){
 	}
 }
 
-function IsCellEmpty(map, x, y){
+function isCellEmpty(map, x, y){
 	
 	var empty = false;
 	
-	var min_x;
-	var max_x;
-	var min_y;
-	var max_y
+	var minX;
+	var maxX;
+	var minY;
+	var maxY;
 	
-	min_x = x - 1;
-	max_x = x + 1;
-	min_y = y - 1;
-	max_y = y + 1;
+	minX = x - 1;
+	maxX = x + 1;
+	minY = y - 1;
+	maxY = y + 1;
 	
-	if(min_x < 0) min_x = 0;
-	if(min_y < 0) min_y = 0;
-	if(max_x > 9) max_x = 9;
-	if(max_y > 9) max_y = 9;
+	if(minX < 0) minX = 0;
+	if(minY < 0) minY = 0;
+	if(maxX > 9) maxX = 9;
+	if(maxY > 9) maxY = 9;
 	
-	for(var i = min_x; i <= max_x; i++){
-		for(var j = min_y; j <= max_y; j++){
+	for(var i = minX; i <= maxX; i++){
+		for(var j = minY; j <= maxY; j++){
 			if(map[i][j] == '~')	{
 				empty = true;
 			}else{
-				empty = false;
+				return false;
 			}
 		}
 	}
 	return empty;
 }
 
-function SetShip(map){
+function setShips(map) {
+
+    for (var i = 4; i > 0; i--) {
+        for (var j = 0; j <= 4 - i; j++) {
+            setShip(map, i);
+        }
+    }
+}
+
+function setShip(map, deckNum){
 	
-	var set_x;
-	var set_y;
-	var exit = false;
+    var tempXy = [deckNum * 2];
+    var canset;
 	
-	while(!exit){
-		set_x = getRandomInt(0, pole_x - 1);
-		set_y = getRandomInt(0, pole_x - 1);
-		
-		if(IsCellEmpty(map, set_x, set_y)){
-			map[set_x][set_y] = 'ship';
-			
-			console.log("ship", set_x, set_y);
-			
-			exit = true;
-		}
-	}
+	var fX, fY, direction;
+    var tY, tX;
+
+    do {
+        canset = true;
+
+        direction = getRandomInt(0, 1);
+        //console.log("direction: ", direction);
+
+        // если direction = 0, то идем вверх, иначе влево
+        if (direction == 0) {
+            fX = getRandomInt(deckNum - 1, 9);
+            fY = getRandomInt(0, 9);
+            //console.log("fx: ", fX, "fy: ", fY);
+            
+            for (var i = 0; i < deckNum; i++) {
+
+                canset = canset && isCellEmpty(map, fX - i, fY);
+
+                if (canset == false) {
+                    break;
+                }
+
+                tempXy[i * 2] = fX - i;
+                tempXy[i * 2 + 1] = fY;
+            }
+        } else {
+            fX = getRandomInt(0, 9);
+            fY = getRandomInt(deckNum - 1, 9);
+            //console.log("fx: ", fX, "fy: ", fY);
+
+            for (var i = 0; i < deckNum; i++) {
+
+                canset = canset && isCellEmpty(map, fX, fY - i);
+
+                if (canset == false) {
+                    break;
+                }
+
+                tempXy[i * 2] = fX;
+                tempXy[i * 2 + 1] = fY - i;
+            }
+        }
+
+        if (canset) {
+            for (var i = 0; i < deckNum; i++) {
+                tX = tempXy[i * 2];
+                tY = tempXy[i * 2 + 1];
+                //console.log("x: ", tX, "y: ", tY);
+
+                map[tX][tY] = 'ship';
+            }
+        }
+    } while (!canset)
 }
 
 function getRandomInt(min, max){
-	return Math.floor((Math.random() * max) + min);
+	return Math.floor(min + Math.random()*(max - min + 1));
 }
