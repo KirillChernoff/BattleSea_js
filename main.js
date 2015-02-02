@@ -37,8 +37,8 @@ function createField(){
 			divAi = document.createElement('div');
             divAi.id = i + '_' + j, divAi.className = aiMap[i][j] == 'deck' ? 'deck' : 'sea';
 			divAi.onclick = function() {
-			    if (fire(this)) {
-			        pcFire();
+			    if (playerShoot(this)) {
+			        aiMove();
 			        //добавить функцию, при которой ПК будет открывать ответный огонь
 			    }
 			}
@@ -152,7 +152,7 @@ function getRandomInt(min, max){
 	return Math.floor(min + Math.random()*(max - min + 1));
 }
 
-function fire(elem) {
+function playerShoot(elem) {
     if (elem.className == 'hit' || elem.className == 'o') {
         return false;
     }
@@ -172,34 +172,50 @@ function fire(elem) {
     return false;
 }
 
-var countOfDeck = 20;
-
-function pcFire() {
+function aiMove() {
 
     var sX, sY;
 
-    var isDeck = false;
-
-    if (countOfDeck == 0) {
+    if (document.querySelectorAll('#playerField .deck').length === 0) {
         alert("You lose!");
+    } else {
+
+        do {
+            sX = getRandomInt(0, pole - 1);
+            sY = getRandomInt(0, pole - 1);
+        } while (!checkCellToFire(sX, sY));
+
+        aiShoot(sX, sY);
     }
+}
 
-    sX = getRandomInt(0, pole - 1);
-    sY = getRandomInt(0, pole - 1);
-
-    var element = document.getElementById(sX + '_' + sY);
+function aiShoot(dX, dY) {
+    
+    var element = document.getElementById(dX + '_' + dY);
 
     if (element.className == 'deck') {
         element.className = 'hit';
 
-        countOfDeck = countOfDeck - 1;
+        var ddX = getRandomInt(0, pole - 1);
+        var ddY = getRandomInt(0, pole - 1);
 
-        console.log("countOfDeck: ", countOfDeck);
+        aiShoot(ddX, ddY);
 
-        pcFire();
+        return true;
     } else {
         if (element.className == 'sea') {
             element.className = 'o';
         }
+        return false;
+    }
+}
+
+function checkCellToFire(cX, cY) {
+    var element = document.getElementById(cX + '_' + cY);
+
+    if (element.className == 'hit' || element.className == 'o') {
+        return false;
+    } else {
+        return true;
     }
 }
