@@ -1,18 +1,18 @@
 var playerMap;
 var aiMap;
 
-var pole_x = 10, pole_y = 10;
+var pole = 10;
 
 function init(){
     playerMap = [];
     aiMap = [];
 	
-	for (var i = 0; i < pole_x; i++){
+	for (var i = 0; i < pole; i++){
 		
 	    playerMap[i] = [];
 	    aiMap[i] = [];
 		
-		for (var j = 0; j < pole_y; j++){
+		for (var j = 0; j < pole; j++){
 		
 		    playerMap[i][j] = '~';
 		    aiMap[i][j] = '~';
@@ -28,8 +28,8 @@ function createField(){
 	var playerField = document.querySelector('#playerField');
 	var aiField = document.querySelector('#aiField');
 
-	for (var i = 0; i < pole_x; i++){
-		for (var j = 0; j < pole_y; j++){
+	for (var i = 0; i < pole; i++){
+		for (var j = 0; j < pole; j++){
 			divPl = document.createElement('div');
 			divPl.id = i + '_' + j, divPl.className = playerMap[i][j] =='deck' ? 'deck' : 'sea';
 			playerField.appendChild(divPl);
@@ -38,7 +38,8 @@ function createField(){
             divAi.id = i + '_' + j, divAi.className = aiMap[i][j] == 'deck' ? 'deck' : 'sea';
 			divAi.onclick = function() {
 			    if (fire(this)) {
-                    //добавить функцию, при которой ПК будет открывать ответный огонь
+			        pcFire();
+			        //добавить функцию, при которой ПК будет открывать ответный огонь
 			    }
 			}
 			aiField.appendChild(divAi);
@@ -169,4 +170,36 @@ function fire(elem) {
     }
 
     return false;
+}
+
+var countOfDeck = 20;
+
+function pcFire() {
+
+    var sX, sY;
+
+    var isDeck = false;
+
+    if (countOfDeck == 0) {
+        alert("You lose!");
+    }
+
+    sX = getRandomInt(0, pole - 1);
+    sY = getRandomInt(0, pole - 1);
+
+    var element = document.getElementById(sX + '_' + sY);
+
+    if (element.className == 'deck') {
+        element.className = 'hit';
+
+        countOfDeck = countOfDeck - 1;
+
+        console.log("countOfDeck: ", countOfDeck);
+
+        pcFire();
+    } else {
+        if (element.className == 'sea') {
+            element.className = 'o';
+        }
+    }
 }
