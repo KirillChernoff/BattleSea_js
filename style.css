@@ -1,8 +1,8 @@
-#playerField .ship {
+#playerField .deck {
 	background: black; 
 }
 
-#aiField .ship, .sea {
+#aiField .deck, .sea {
 	background: #00BFFF; 
 }
 

@@ -31,12 +31,16 @@ function createField(){
 	for (var i = 0; i < pole_x; i++){
 		for (var j = 0; j < pole_y; j++){
 			divPl = document.createElement('div');
-			divPl.id = i + '_' + j, divPl.className = playerMap[i][j] =='ship' ? 'ship' : 'sea';
+			divPl.id = i + '_' + j, divPl.className = playerMap[i][j] =='deck' ? 'deck' : 'sea';
 			playerField.appendChild(divPl);
 			
 			divAi = document.createElement('div');
-            divAi.id = i + '_' + j, divAi.className = aiMap[i][j] == 'ship' ? 'ship' : 'sea';
-			// divAi.onclick =
+            divAi.id = i + '_' + j, divAi.className = aiMap[i][j] == 'deck' ? 'deck' : 'sea';
+			divAi.onclick = function() {
+			    if (fire(this)) {
+                    //добавить функцию, при которой ПК будет открывать ответный огонь
+			    }
+			}
 			aiField.appendChild(divAi);
 		}
 	}
@@ -137,7 +141,7 @@ function setShip(map, deckNum){
                 tY = tempXy[i * 2 + 1];
                 //console.log("x: ", tX, "y: ", tY);
 
-                map[tX][tY] = 'ship';
+                map[tX][tY] = 'deck';
             }
         }
     } while (!canset)
@@ -145,4 +149,24 @@ function setShip(map, deckNum){
 
 function getRandomInt(min, max){
 	return Math.floor(min + Math.random()*(max - min + 1));
+}
+
+function fire(elem) {
+    if (elem.className == 'hit' || elem.className == 'o') {
+        return false;
+    }
+
+    elem.className = elem.className == 'deck' ? 'hit' : 'o';
+
+    if (document.querySelectorAll('#aiField .deck').length === 0) {
+        alert("You win!");
+
+        return false;
+    }
+
+    if (elem.className == 'o') {
+        return true;
+    }
+
+    return false;
 }
